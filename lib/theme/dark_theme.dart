@@ -60,7 +60,7 @@ class DarkTheme{
         ),
         scaffoldBackgroundColor: Colors.grey.shade900,
         progressIndicatorTheme: const ProgressIndicatorThemeData(
-            color: Colors.white
+            color: Colors.white,
         ),
         textButtonTheme: TextButtonThemeData(
             style: ButtonStyle(

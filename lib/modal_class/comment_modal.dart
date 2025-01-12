@@ -22,7 +22,7 @@ class CommentModal{
         dislikes=json['dislikes'],
         date=json['date'],
         name=json['name'],
-        image=json['image']!=''?"${MyApi.imgUrl}/${json['image']}":'',
+        image=json['image']!=null && json['image']!=''?"${MyApi.imgUrl}/${json['image']}":null,
         showReplies=int.parse(json['replies'].toString())>0;
 
   CommentModal(

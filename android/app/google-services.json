@@ -1,1 +1,29 @@
-firebase
+{
+  "project_info": {
+    "project_number": "662762176183",
+    "project_id": "glowbal-network",
+    "storage_bucket": "glowbal-network.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:662762176183:android:b9df54a0e023ca7cd35732",
+        "android_client_info": {
+          "package_name": "co.uk.glowbalnetwork"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBP-AkUwT4PBpb8rO865Gnz7s49XKibm3Y"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,36 +1,106 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:zeus/app_update_check.dart';
 import 'package:zeus/bottom_navigation/navigation_bloc.dart';
-import 'package:zeus/main_screens/account/account.dart';
-import 'package:zeus/main_screens/downloads.dart';
-import 'package:zeus/main_screens/episode/episode_cubit.dart';
-import 'package:zeus/main_screens/home/home.dart';
-import 'package:zeus/main_screens/home/home_cubit.dart';
-import 'package:zeus/main_screens/search/search_cubit.dart';
+import 'package:zeus/screens/main_screens/account/account.dart';
+import 'package:zeus/screens/main_screens/account/account_cubit.dart';
+import 'package:zeus/screens/main_screens/episode/pageview_cubit.dart';
+import 'package:zeus/screens/main_screens/home/home.dart';
+import 'package:zeus/screens/main_screens/home/home_cubit.dart';
+import 'package:zeus/screens/main_screens/search/search.dart';
+import 'package:zeus/screens/main_screens/search/search_cubit.dart';
+import 'package:zeus/screens/subscription/subscription_cubit.dart';
+import 'package:zeus/screens/verify_email/verifyEmail.dart';
 import 'package:zeus/theme/dark_theme.dart';
 import 'package:zeus/theme/light_theme.dart';
 import 'package:zeus/theme/theme_cubit.dart';
 
 import 'firebase_options.dart';
-import 'main_screens/account/account_cubit.dart';
-import 'main_screens/search/search.dart';
+import 'package:rxdart/rxdart.dart';
 import 'modal_class/user_details.dart';
+
+final _messageStreamController = BehaviorSubject<RemoteMessage>();
+
+final navigatorKey = GlobalKey<NavigatorState>();
 
 Future<void> main()  async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  if(Platform.isIOS){
+    _requestPermission();
+  }
+  _getToken();
+  //todo : change this to all
+  _subscribeToTopic('all');
+  _setupForegroundMsg();
   final prefs=await SharedPreferences.getInstance();
   UserDetails.id= prefs.getString('userId');
   runApp(const MyApp());
 }
 
+Future<void> _requestPermission() async {
+  final messaging = FirebaseMessaging.instance;
+
+  final settings = await messaging.requestPermission(
+    alert: true,
+    announcement: false,
+    badge: true,
+    carPlay: false,
+    criticalAlert: false,
+    provisional: false,
+    sound: true,
+  );
+
+  if (kDebugMode) {
+    print('Permission granted: ${settings.authorizationStatus}');
+  }
+}
+
+void _setupForegroundMsg(){
+  FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+    if (kDebugMode) {
+      print('Handling a foreground message: ${message.messageId}');
+      print('Message data: ${message.data}');
+      print('Message notification: ${message.notification?.title}');
+      print('Message notification: ${message.notification?.body}');
+    }
+
+    _messageStreamController.sink.add(message);
+  });
+}
+
+Future<void> _getToken() async {
+  final messaging = FirebaseMessaging.instance;
+  // It requests a registration token for sending messages to users from your App server or other trusted server environment.
+  String? token = await messaging.getToken();
+
+  if (kDebugMode) {
+    print('Registration Token=$token');
+  }
+}
+
+void _subscribeToTopic(String topic) async {
+  final messaging = FirebaseMessaging.instance;
+
+  try {
+    await messaging.subscribeToTopic(topic);
+    print('Subscribed to topic: $topic');
+  } catch (e) {
+    print('Error subscribing to topic: $e');
+  }
+}
 
 
 class MyApp extends StatelessWidget {
@@ -60,7 +130,7 @@ class MyApp extends StatelessWidget {
                 home: child,
               );
             },
-            child: MyHomePage(),
+            child: const MyHomePage(),
           );
         },
 
@@ -70,20 +140,50 @@ class MyApp extends StatelessWidget {
 
 }
 
-class MyHomePage extends StatelessWidget {
-  MyHomePage({super.key});
+class MyHomePage extends StatefulWidget {
+  const MyHomePage({super.key});
 
+  @override
+  State<MyHomePage> createState() => _MyHomePageState();
+}
+
+class _MyHomePageState extends State<MyHomePage> {
   // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
-  // final List<Widget> list=  [const Home(),Search(),const Downloads(),const Account()];
   final List<Widget> list=  [const Home(),Search(),const Account()];
+
+  Future<void> setupInteractedMessage() async {
+    // Get any messages which caused the application to open from
+    // a terminated state.
+    RemoteMessage? initialMessage =
+    await FirebaseMessaging.instance.getInitialMessage();
+
+    // If the message also contains a data property with a "type" of "chat",
+    // navigate to a chat screen
+    if (initialMessage != null) {
+      _handleMessage(initialMessage);
+    }
+
+    // Also handle any interaction when the app is in the background via a
+    // Stream listener
+    FirebaseMessaging.onMessageOpenedApp.listen(_handleMessage);
+  }
+
+  void _handleMessage(RemoteMessage message) {
+    // print("home ${message.data}");
+    if (message.data['screen'] == 'video') {
+      // Navigator.push(context, MaterialPageRoute(builder: (builder)=>VideoDetail(postModal: PostModal.fromJson(
+      //     jsonDecode(message.data['postData'])[0]
+      // ))));
+    }
+
+  }
+
+  @override
+  void initState() {
+    setupInteractedMessage();
+    AppUpdateCheck().checkForUpdate(context);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -96,6 +196,7 @@ class MyHomePage extends StatelessWidget {
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
     ]);
+    // return VerifyEmail();
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: (create)=>NavigationCubit()),
@@ -104,6 +205,7 @@ class MyHomePage extends StatelessWidget {
         BlocProvider(create: (create)=>HomeCubit()),
         BlocProvider(create: (create)=>SearchCubit()..loadPrefs()),
         BlocProvider(create: (create)=>PageViewCubit()),
+        BlocProvider(create: (create)=>SubscriptionCubit()..checkSubscription()),
         BlocProvider(create: (context){
           return AccountCubit()..isLoggedIn();
         }),

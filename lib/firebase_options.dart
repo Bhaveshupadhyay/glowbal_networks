@@ -50,19 +50,20 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyDWM9xWwdSGJtzTS54y1rqMbyYa05MmN1Q',
-    appId: '1:439265753088:android:69c3b5da91f4b7d47500e5',
-    messagingSenderId: '439265753088',
-    projectId: 'glowbal-networks',
-    storageBucket: 'glowbal-networks.appspot.com',
+    apiKey: 'AIzaSyBP-AkUwT4PBpb8rO865Gnz7s49XKibm3Y',
+    appId: '1:662762176183:android:b9df54a0e023ca7cd35732',
+    messagingSenderId: '662762176183',
+    projectId: 'glowbal-network',
+    storageBucket: 'glowbal-network.firebasestorage.app',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyBnFUqMpVx1V2qgNhDKImCyIdWYysO7XyU',
-    appId: '1:439265753088:ios:de7b59b7602effbe7500e5',
-    messagingSenderId: '439265753088',
-    projectId: 'glowbal-networks',
-    storageBucket: 'glowbal-networks.appspot.com',
-    iosBundleId: 'co.app.glowbalnetworks',
+    apiKey: 'AIzaSyAVBh6PfZi6-M_G1DH_IFcM-K_6wgqpCO0',
+    appId: '1:662762176183:ios:231e80c40f257fbcd35732',
+    messagingSenderId: '662762176183',
+    projectId: 'glowbal-network',
+    storageBucket: 'glowbal-network.firebasestorage.app',
+    iosBundleId: 'co.uk.zeus',
   );
+
 }

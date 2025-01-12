@@ -14,7 +14,7 @@ class UserDetails{
   UserDetails.fromJson(Map<String,dynamic> json):
         email=json['email'],
         name=json['name'],
-        image="${MyApi.imgUrl}/${json['image']}",
+        image=json['image']!=null && json['image'].toString().isNotEmpty?"${MyApi.imgUrl}/${json['image']}":null,
         ip=json['ip_address'];
 }
 

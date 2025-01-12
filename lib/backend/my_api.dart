@@ -2,10 +2,13 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:zeus/modal_class/continue_watching_modal.dart';
 import 'package:zeus/modal_class/episode_modal.dart';
 import 'package:zeus/modal_class/home_modal.dart';
 import 'package:zeus/modal_class/search_modal.dart';
+import 'package:zeus/modal_class/subscription_modal.dart';
+import 'package:zeus/modal_class/video_data.dart';
 import 'package:zeus/modal_class/video_modal.dart';
 
 import '../modal_class/comment_modal.dart';
@@ -127,11 +130,11 @@ class MyApi{
             (response){
           if(response.statusCode==200){
             // print(response.body);
-            for(var json in jsonDecode(response.body)['episodes']){
+            for(var json in jsonDecode(response.body)['episodes']??[]){
               episodesList.add(EpisodeModal.fromJson(json));
             }
 
-            for(var json in jsonDecode(response.body)['collections']){
+            for(var json in jsonDecode(response.body)['collections']??[]){
               videoList.add(VideoModal.fromJson(json));
             }
           }
@@ -335,4 +338,101 @@ class MyApi{
     });
   }
 
+
+  Future<SubscriptionModal> getSubscription(String email) async {
+    try {
+      final response = await http.post(
+        Uri.parse('$baseUrl/get/subscription.php'),
+        body: {"email": email},
+      );
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body);
+        // print(data);
+        return SubscriptionModal.fromJson(data);
+      } else {
+        throw Exception('Failed to load subscription. Status code: ${response.statusCode}');
+      }
+    } catch (e) {
+      throw Exception('An error occurred: $e');
+    }
+  }
+
+  // Future<Map<String,dynamic>> getVideoUrl(String videoUrl) async {
+  //   final prefs= await SharedPreferences.getInstance();
+  //   String email=prefs.getString('email')??'';
+  //   try {
+  //     final response = await http.post(
+  //       Uri.parse('$baseUrl/get/videoUrl.php'),
+  //       body: {"email": email,"videoUrl": videoUrl},
+  //     );
+  //     if (response.statusCode == 200) {
+  //       final data = json.decode(response.body);
+  //       // print(data);
+  //       return data;
+  //     } else {
+  //       throw Exception('Failed to load subscription. Status code: ${response.statusCode}');
+  //     }
+  //   } catch (e) {
+  //     throw Exception('An error occurred: $e');
+  //   }
+  // }
+
+  Future<VideoData> getVideoUrl({required String videoId}) async {
+    final prefs= await SharedPreferences.getInstance();
+    String email=prefs.getString('email')??'';
+    try {
+      final response = await http.post(
+        Uri.parse('$baseUrl/get/videoLink.php'),
+        body: {"email": email,"video_id": videoId},
+      );
+      if (response.statusCode == 200) {
+        // print(data);
+        return VideoData.fromJson(json.decode(response.body),false);
+      } else {
+        throw Exception('Failed to load subscription. Status code: ${response.statusCode}');
+      }
+    } catch (e) {
+      throw Exception('An error occurred: $e');
+    }
+  }
+
+  Future<VideoData> getTrailerUrl({required String trailerId}) async {
+
+    try {
+      final response = await http.post(
+        Uri.parse('$baseUrl/get/trailerLink.php'),
+        body: {"trailer_id": trailerId},
+      );
+      if (response.statusCode == 200) {
+        // print(response.body);
+        return VideoData.fromJson(json.decode(response.body),true);
+      } else {
+        throw Exception('Failed to load subscription. Status code: ${response.statusCode}');
+      }
+    } catch (e) {
+      throw Exception('An error occurred: $e');
+    }
+  }
+
+  Future<void> sendVerifyEmail()async {
+    final prefs= await SharedPreferences.getInstance();
+    String email=prefs.getString('email')??'';
+    await http.post(Uri.parse('$baseUrl/mail/resendMail.php'),body: {"email":email})
+        .then((response){
+      if(response.statusCode==200){
+
+      }
+    });
+  }
+
+  Future<void> sendCancelEmail()async {
+    final prefs= await SharedPreferences.getInstance();
+    String email=prefs.getString('email')??'';
+    await http.post(Uri.parse('$baseUrl/mail/cancelMail.php'),body: {"email":email})
+        .then((response){
+      if(response.statusCode==200){
+
+      }
+    });
+  }
 }
