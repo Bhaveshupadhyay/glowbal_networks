@@ -13,7 +13,7 @@ class VideoModal{
       title=json['title'],
       description=json['description'],
       image='${MyApi.imgUrl}/${json['image']}',
-      video='${MyApi.imgUrl}/${json['video']}',
+      video='${json['video']}',
       videoLength=json['video_length'];
 
   VideoModal.fromHomeJson(Map<String,dynamic> json):
@@ -21,6 +21,6 @@ class VideoModal{
       title=json['videoTitle'],
       description=json['videoDescription'],
       image='${MyApi.imgUrl}/${json['videoImage']}',
-      video='${MyApi.imgUrl}/${json['videoUrl']}',
+      video='${json['videoUrl']}',
       videoLength=json['videoLength'];
 }

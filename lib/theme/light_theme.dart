@@ -18,7 +18,8 @@ class LightTheme{
           color: Colors.black,
         ),
         floatingActionButtonTheme: const FloatingActionButtonThemeData(
-          backgroundColor: Colors.blueAccent,
+          backgroundColor: Colors.white,
+          foregroundColor: Colors.black
         ),
         textTheme: TextTheme(
           titleMedium: GoogleFonts.poppins(
@@ -49,10 +50,10 @@ class LightTheme{
         ),
         bottomNavigationBarTheme: const BottomNavigationBarThemeData(
           backgroundColor: Colors.white,
-          selectedItemColor: Colors.red,
+          selectedItemColor: Colors.pink,
           unselectedItemColor: Colors.black,
           selectedIconTheme: IconThemeData(
-            color: Colors.red,
+            color: Colors.pink,
           ),
           unselectedIconTheme: IconThemeData(
             color: Colors.black,
@@ -68,7 +69,6 @@ class LightTheme{
             )
         ),
       dividerColor: Colors.black26,
-
 
       // Define more light theme properties here
     );

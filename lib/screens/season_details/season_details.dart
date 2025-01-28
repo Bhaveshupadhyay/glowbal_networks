@@ -34,7 +34,7 @@ class SeasonDetails extends StatelessWidget {
       child: BlocListener<VideoOrientationCubit, Orientation>(
         listener: (BuildContext context, orientation) {
           if (orientation == Orientation.landscape) {
-            context.read<VideoCubit>().initVideoPlayer(trailerId: videoModal.id,isTrailer: true);
+            context.read<VideoCubit>().loadVideo(trailerId: videoModal.id,isTrailer: true);
           }
         },
         child: BlocBuilder<VideoOrientationCubit, Orientation>(

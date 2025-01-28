@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:io';
 
 import 'package:firebase_core/firebase_core.dart';
@@ -8,10 +7,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:zeus/app_update_check.dart';
-import 'package:zeus/bottom_navigation/navigation_bloc.dart';
+import 'package:zeus/bottom_navigation/navigation_cubit.dart';
 import 'package:zeus/screens/main_screens/account/account.dart';
 import 'package:zeus/screens/main_screens/account/account_cubit.dart';
 import 'package:zeus/screens/main_screens/episode/pageview_cubit.dart';
@@ -20,7 +18,7 @@ import 'package:zeus/screens/main_screens/home/home_cubit.dart';
 import 'package:zeus/screens/main_screens/search/search.dart';
 import 'package:zeus/screens/main_screens/search/search_cubit.dart';
 import 'package:zeus/screens/subscription/subscription_cubit.dart';
-import 'package:zeus/screens/verify_email/verifyEmail.dart';
+import 'package:zeus/screens/task/task.dart';
 import 'package:zeus/theme/dark_theme.dart';
 import 'package:zeus/theme/light_theme.dart';
 import 'package:zeus/theme/theme_cubit.dart';
@@ -42,6 +40,7 @@ Future<void> main()  async {
     _requestPermission();
   }
   _getToken();
+
   //todo : change this to all
   _subscribeToTopic('all');
   _setupForegroundMsg();
@@ -96,9 +95,13 @@ void _subscribeToTopic(String topic) async {
 
   try {
     await messaging.subscribeToTopic(topic);
-    print('Subscribed to topic: $topic');
+    if (kDebugMode) {
+      print('Subscribed to topic: $topic');
+    }
   } catch (e) {
-    print('Error subscribing to topic: $e');
+    if (kDebugMode) {
+      print('Error subscribing to topic: $e');
+    }
   }
 }
 
@@ -149,7 +152,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   // This widget is the home page of your application. It is stateful, meaning
-  final List<Widget> list=  [const Home(),Search(),const Account()];
+  final List<Widget> list=  [const Home(),Task(),Search(),const Account()];
 
   Future<void> setupInteractedMessage() async {
     // Get any messages which caused the application to open from
@@ -226,19 +229,20 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             bottomNavigationBar: BottomNavigationBar(
               showSelectedLabels: true,
+              showUnselectedLabels: true,
               items: const [
                 BottomNavigationBarItem(
                     icon: Icon(Icons.home,),
                     label: "Home"
                 ),
                 BottomNavigationBarItem(
+                    icon: Icon(Icons.girl,),
+                    label: "Task"
+                ),
+                BottomNavigationBarItem(
                     icon: Icon(Icons.search,),
                     label: "Search"
                 ),
-                // BottomNavigationBarItem(
-                //     icon: Icon(Icons.list,),
-                //     label: "Downloads"
-                // ),
                 BottomNavigationBarItem(
                     icon: Icon(Icons.person_2_outlined),
                     label: "Account"

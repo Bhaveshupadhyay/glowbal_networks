@@ -8,7 +8,10 @@ abstract class VideoState{}
  class VideoInitialized extends VideoState{
   final VideoPlayerController videoPlayerController;
   final bool showControls;
-  VideoInitialized(this.videoPlayerController, this.showControls);
+  final List<String>? videoQualities;
+  final String? currentQuality;
+  VideoInitialized({required this.videoPlayerController, required this.showControls,
+   this.videoQualities,this.currentQuality, });
 }
 
 class VideoError extends VideoState{

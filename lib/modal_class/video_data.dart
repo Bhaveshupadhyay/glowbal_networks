@@ -1,9 +1,9 @@
 class VideoData {
-  bool? isSubActive;
-  List<VideoVersion>? sdVersions;
-  List<VideoVersion>? hdVersions;
-  List<VideoVersion>? hlsVersions;
-  List<String>? qualities;
+  final bool? isSubActive;
+  final List<VideoVersion>? sdVersions;
+  final List<VideoVersion>? hdVersions;
+  final List<VideoVersion>? hlsVersions;
+  final List<String>? qualities;
 
   VideoData({
     required this.isSubActive,
@@ -17,6 +17,16 @@ class VideoData {
     if((json['isSubActive']==false || json['isSubActive']==null) && !isTrailer) {
       return VideoData(isSubActive: false);
     }
+    List<String> sortedQualities= List<String>.from(json['qualities']);
+    sortedQualities.sort((a, b) {
+      // If either value is "adaptive", we push it to the end
+      if (a == "adaptive") return -1;
+      if (b == "adaptive") return 1;
+
+      // Sort numbers as integers
+      return int.parse(a).compareTo(int.parse(b));
+    });
+
     return VideoData(
       isSubActive: json['isSubActive'],
       sdVersions: (json['sd_versions'] as List)
@@ -28,15 +38,15 @@ class VideoData {
       hlsVersions: (json['hls_versions'] as List)
           .map((e) => VideoVersion.fromJson(e))
           .toList(),
-      qualities: List<String>.from(json['qualities']),
+      qualities: sortedQualities,
     );
   }
 }
 
 class VideoVersion {
-  String rendition;
-  String link;
-  String size;
+  final String rendition;
+  final String link;
+  final String size;
 
   VideoVersion({
     required this.rendition,

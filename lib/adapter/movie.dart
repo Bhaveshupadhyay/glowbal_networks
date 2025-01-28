@@ -15,7 +15,7 @@ class Movie extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: 230.w,
+      width: 250.w,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -33,8 +33,8 @@ class Movie extends StatelessWidget {
               //   ),
               // ),
               SizedBox(
-                height:150.h,
-                width: 230.w,
+                height:170.h,
+                width: 250.w,
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(10.r),
                   child: CachedNetworkImage(

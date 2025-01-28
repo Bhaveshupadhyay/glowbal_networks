@@ -15,6 +15,6 @@ class EpisodeModal{
         title=json['title'],
         description=json['description'],
         image='${MyApi.imgUrl}/${json['image']}',
-        video='${MyApi.imgUrl}/${json['video']}',
+        video='${json['video']}',
         videoLength=json['video_length'].toString();
 }

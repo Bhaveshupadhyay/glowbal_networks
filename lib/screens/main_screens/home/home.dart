@@ -3,7 +3,6 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:zeus/adapter/continue_watching.dart';
 import 'package:zeus/adapter/movie.dart';
@@ -235,7 +234,7 @@ class Home extends StatelessWidget {
         ),
         SizedBox(height:10.h),
         SizedBox(
-          height: 200.h,
+          height: 250.h,
           width: double.infinity,
           child: ListView.separated(
             scrollDirection: Axis.horizontal,
@@ -261,7 +260,7 @@ class Home extends StatelessWidget {
             separatorBuilder: (context,index)=>SizedBox(width: 20.w,),
           ),
         ),
-        SizedBox(height: 30.h,),
+        SizedBox(height: 20.h,),
       ],
     );
   }

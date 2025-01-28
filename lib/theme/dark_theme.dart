@@ -18,6 +18,7 @@ class DarkTheme{
         ),
         floatingActionButtonTheme: const FloatingActionButtonThemeData(
           backgroundColor: Colors.black,
+            foregroundColor: Colors.white
         ),
         textTheme: TextTheme(
           titleMedium: GoogleFonts.poppins(
@@ -49,10 +50,10 @@ class DarkTheme{
         ),
         bottomNavigationBarTheme: const BottomNavigationBarThemeData(
           backgroundColor: Colors.black,
-          selectedItemColor: Colors.red,
+          selectedItemColor: Colors.pink,
           unselectedItemColor: Colors.white,
           selectedIconTheme: IconThemeData(
-            color: Colors.red,
+            color: Colors.pink,
           ),
           unselectedIconTheme: IconThemeData(
             color: Colors.white,

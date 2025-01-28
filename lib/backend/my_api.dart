@@ -397,7 +397,6 @@ class MyApi{
   }
 
   Future<VideoData> getTrailerUrl({required String trailerId}) async {
-
     try {
       final response = await http.post(
         Uri.parse('$baseUrl/get/trailerLink.php'),

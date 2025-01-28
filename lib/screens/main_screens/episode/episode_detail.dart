@@ -3,20 +3,14 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:video_player/video_player.dart';
 import 'package:zeus/adapter/search_block.dart';
 import 'package:zeus/modal_class/episode_modal.dart';
 import 'package:zeus/modal_class/user_details.dart';
 import 'package:zeus/screens/main_screens/episode/potrait_video.dart';
 import 'package:zeus/screens/main_screens/episode/video_cubit.dart';
-import 'package:zeus/screens/subscription/plans.dart';
-import 'package:zeus/screens/subscription/subscription_cubit.dart';
-import 'package:zeus/screens/subscription/subscription_state.dart';
-import 'package:zeus/screens/verify_email/verifyEmail.dart';
 
 import '../../../modal_class/comment_modal.dart';
 import '../../../modal_class/reply_modal.dart';
-import '../../season_details/season_cubit.dart';
 import '../../season_details/season_state.dart';
 import '../login/login.dart';
 import 'comment_reply/comm_reply_cubit.dart';
@@ -45,7 +39,7 @@ class EpisodeDetail extends StatelessWidget {
     }
     return MultiBlocProvider(
       providers: [
-        BlocProvider(create: (create)=>VideoCubit(episodeId: episodeModal.episodeId,lastWatchedPosition: lastWatchedPosition)..initVideoPlayer(link: episodeModal.video, isTrailer: false)),
+        BlocProvider(create: (create)=>VideoCubit(episodeId: episodeModal.episodeId,lastWatchedPosition: lastWatchedPosition)..loadVideo(link: episodeModal.video, isTrailer: false)),
         // BlocProvider(create: (create)=>SubscriptionCubit()..checkSubscription()),
         BlocProvider(create: (create)=>VideoOrientationCubit()),
         BlocProvider(create: (create)=>EpisodesCubit()

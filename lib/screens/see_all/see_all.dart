@@ -8,7 +8,6 @@ import '../../utils/convert_utils.dart';
 import '../../utils/utils.dart';
 import '../main_screens/episode/episode_cubit.dart';
 import '../main_screens/episode/episode_detail.dart';
-import '../season_details/season_cubit.dart';
 import '../season_details/season_state.dart';
 
 class SeeAll extends StatelessWidget {
@@ -51,7 +50,7 @@ class SeeAll extends StatelessWidget {
                               Stack(
                                 children: [
                                   SizedBox(
-                                    height: 200.h,
+                                    height: 220.h,
                                     width: double.infinity,
                                     child: ClipRRect(
                                       borderRadius: BorderRadius.circular(10.r),
