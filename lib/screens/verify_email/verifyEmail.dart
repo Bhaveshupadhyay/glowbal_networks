@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:zeus/adapter/continue_watching.dart';
+import 'package:zeus/widget/continue_watching.dart';
 import 'package:zeus/backend/my_api.dart';
 import 'package:zeus/main.dart';
 

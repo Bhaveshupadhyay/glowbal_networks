@@ -5,7 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shimmer/shimmer.dart';
-import 'package:zeus/adapter/search_block.dart';
+import 'package:zeus/widget/search_block.dart';
 import 'package:zeus/screens/main_screens/search/search_cubit.dart';
 import 'package:zeus/screens/main_screens/search/search_state.dart';
 

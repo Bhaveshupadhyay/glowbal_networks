@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:shimmer/shimmer.dart';
-import 'package:zeus/adapter/continue_watching.dart';
-import 'package:zeus/adapter/movie.dart';
+import 'package:zeus/widget/continue_watching.dart';
+import 'package:zeus/widget/movie.dart';
 import 'package:zeus/modal_class/episode_modal.dart';
 import 'package:zeus/modal_class/home_modal.dart';
 
